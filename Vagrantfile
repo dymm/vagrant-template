@@ -24,9 +24,9 @@ Vagrant.configure("2") do |config|
 		#
 		# Configure hostfiles to use local squid proxy.
 		#
-		export DEBIAN_FRONTEND=noninteractive
+	export DEBIAN_FRONTEND=noninteractive
     sudo apt-get update
-    sudo apt-get install -y \
+    sudo apt-get -o DPkg::Options::=--force-confdef install -y \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -39,14 +39,15 @@ Vagrant.configure("2") do |config|
     sudo apt-get update
     sudo apt-get install -y docker-ce
     sudo usermod -aG docker vagrant
-    sudo restart docker
+    sudo service docker restart
     sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
     sudo chmod a+x /usr/local/bin/docker-compose
     sudo apt-get install -y putty-tools
     puttygen /vagrant/.vagrant/machines/default/virtualbox/private_key -O private -o /vagrant/.vagrant/machines/default/virtualbox/private_key.ppk
     echo "START putty.exe -P 55555 -i ".vagrant/machines/default/virtualbox/private_key.ppk" vagrant@127.0.0.1" > /vagrant/vm_login.bat
-    cd /vagrant/registry
-    sh setup.sh
+    //private registry setup if needed
+    //cd /vagrant/registry
+    //sh setup.sh
     cd -
 	SHELL
 end
